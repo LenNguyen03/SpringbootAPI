@@ -1,11 +1,13 @@
 package com.example.springbootapi.controller;
 
+import com.example.springbootapi.dto.EmployeeDTO;
 import com.example.springbootapi.entity.Employee;
 import com.example.springbootapi.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,8 +26,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees(){
-        return employeeService.getAllEmployees();
+    public List<EmployeeDTO> getAllEmployees(){
+        List<Employee> employees = employeeService.getAllEmployees();
+
+        List<EmployeeDTO> dtoList = new ArrayList<>();
+        for(Employee employee : employees){
+            dtoList.add(new EmployeeDTO(employee));
+        }
+        return dtoList;
     }
     @DeleteMapping("/employees/{id}")
     public void deleteById(@PathVariable("id") Long id){
